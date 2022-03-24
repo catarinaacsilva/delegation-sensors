@@ -1,39 +1,27 @@
 version: '3.8'
 services:
-  sensor_temp_hum_a:
-    build: ./temperature_humidity_a
-    network_mode: host
-  sensor_temp_hum_b:
-    build: ./temperature_humidity_b
-    network_mode: host
   mosquitto:
-      image: eclipse-mosquitto:1.6.13
-      ports: 
-        - '1883:1883'
-        - '9001:9001'
-      volumes:
-        - mosquitto-data:/mosquitto/data
-        - mosquitto-logs:/mosquitto/logs
-        - mosquitto-conf:/mosquitto/config
-      restart: always
+    image: eclipse-mosquitto:2
+    volumes:
+      - ./config:/mosquitto/config/
+    ports:
+      - '1883:1883'
+    restart: unless-stopped
+  
+  delegator:
+    build: ./delegator
+    depends_on:
+      - mosquitto
 
-
-volumes:
-  mosquitto-data:
-    driver: local
-    driver_opts:
-      o: bind
-      type: none
-      device: ./mosquitto/mosquittodata
-  mosquitto-logs:
-    driver: local
-    driver_opts:
-      o: bind
-      type: none
-      device: ./mosquitto/mosquittologs
-  mosquitto-conf:
-    driver: local
-    driver_opts:
-      o: bind
-      type: none
-      device: ./mosquitto/mosquittoconfig
+  sensor_a:
+    build: ./sensor_a
+    depends_on:
+      - mosquitto
+      - delegator
+  
+  sensor_b:
+    build: ./sensor_b
+    depends_on:
+      - mosquitto
+      - delegator
+  
