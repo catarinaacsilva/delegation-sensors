@@ -1,7 +1,7 @@
 # IoT Delegation
 
-This repository contains the Proof of Concept (PoC) from the paper named "Dynamic Delegation-based Privacy Preserving in
-IoT Architectures".
+This repository contains the Proof of Concept (PoC) from the paper named [Dynamic Delegation-based Privacy Preserving in
+IoT Architectures](https://www.researchgate.net/publication/363024342_Dynamic_Delegation-based_Privacy_Preserving_in_IoT_Architectures).
 
 ## Setup
 
